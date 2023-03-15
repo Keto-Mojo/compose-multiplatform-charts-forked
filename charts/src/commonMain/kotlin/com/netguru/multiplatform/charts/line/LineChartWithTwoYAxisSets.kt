@@ -14,6 +14,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import com.netguru.multiplatform.charts.ChartAnimation
 import com.netguru.multiplatform.charts.getAnimationAlphas
 import com.netguru.multiplatform.charts.grid.*
@@ -350,6 +351,7 @@ private fun LineChartWithTwoYAxisSetsLayout(
                     yAxisTitleData = rightYAxisData.yAxisTitleData,
                     modifier = Modifier
                         .padding(start = 8.dp)
+                        .zIndex(-1f)
                 )
             }
         }
