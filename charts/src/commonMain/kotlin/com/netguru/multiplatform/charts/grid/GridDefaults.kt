@@ -52,8 +52,8 @@ internal object GridDefaults {
         )
     }
 
-    val OverlayDataEntryLabel: @Composable (dataName: String, dataNameShort: String?, dataUnit: String?, value: Any) -> Unit =
-        { dataName, dataNameShort, dataUnit, value ->
+    val OverlayDataEntryLabel: @Composable (dataName: String, dataNameShort: String?, dataUnit: String?, value: Any, xIsCloseToCenter: Boolean?) -> Unit =
+        { dataName, dataNameShort, dataUnit, value, _ ->
             Text(
                 text = "$dataName${dataNameShort?.let { " ($it)" }.orEmpty()}: $value" + dataUnit?.let { " $it" }
                     .orEmpty()

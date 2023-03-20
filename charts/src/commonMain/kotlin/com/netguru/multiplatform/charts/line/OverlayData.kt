@@ -7,7 +7,7 @@ import com.netguru.multiplatform.charts.grid.GridDefaults
 
 data class OverlayData(
     val overlayHeaderLabel: @Composable (value: Any, dataUnit: String?) -> Unit = GridDefaults.OverlayHeaderLabel,
-    val overlayDataEntryLabel: @Composable (dataName: String, dataNameShort: String?, dataUnit: String?, value: Any) -> Unit = GridDefaults.OverlayDataEntryLabel,
+    val overlayDataEntryLabel: @Composable (dataName: String, dataNameShort: String?, dataUnit: String?, value: Any, xIsCloseToCenter: Boolean?) -> Unit = GridDefaults.OverlayDataEntryLabel,
     val showEnlargedPointOnLine: Boolean = false,
     val showInterpolatedValues: Boolean = true,
     val highlightPointsCloserThan: Dp = 30.dp,
