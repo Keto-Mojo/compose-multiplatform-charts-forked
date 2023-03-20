@@ -82,7 +82,7 @@ private fun LineChartOverlayInformation(
     containerSize: Size,
     colors: LineChartColors,
     overlayHeaderLayout: @Composable (value: Any, dataUnit: String?) -> Unit,
-    overlayDataEntryLayout: @Composable (dataName: String, dataNameShort: String?, dataUnit: String?, value: Any) -> Unit,
+    overlayDataEntryLayout: @Composable (dataName: String, dataNameShort: String?, dataUnit: String?, value: Any, xIsCloseToCenter: Boolean?) -> Unit,
     drawPoints: (points: List<SeriesAndClosestPoint>) -> Unit,
     highlightPointsCloserThan: Dp,
     touchOffsetHorizontal: Dp,
@@ -153,7 +153,7 @@ private fun LineChartOverlayInformation(
             touchOffsetVertical = touchOffsetVertical,
             requiredOverlayWidth = overlayWidth,
             overlayAlpha = overlayAlpha,
-        ) {
+        ) { xIsCloseToCenter ->
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -195,7 +195,7 @@ private fun LineChartOverlayInformation(
                                         val dataNameShort = seriesAndClosestPoint.lineChartSeries.dataNameShort
                                         val dataUnit = seriesAndClosestPoint.dataUnit
                                         val value = seriesAndClosestPoint.closestPoint.y
-                                        overlayDataEntryLayout(dataName, dataNameShort, dataUnit, value!!)
+                                        overlayDataEntryLayout(dataName, dataNameShort, dataUnit, value!!, xIsCloseToCenter)
                                     }
                                 }
                         }
@@ -226,7 +226,7 @@ private fun LineChartOverlayInformationWithInterpolatedValues(
     containerSize: Size,
     colors: LineChartColors,
     overlayHeaderLayout: @Composable (value: Any, dataUnit: String?) -> Unit,
-    overlayDataEntryLayout: @Composable (dataName: String, dataNameShort: String?, dataUnit: String?, value: Any) -> Unit,
+    overlayDataEntryLayout: @Composable (dataName: String, dataNameShort: String?, dataUnit: String?, value: Any, xIsCloseToCenter: Boolean?) -> Unit,
     touchOffsetHorizontal: Dp,
     touchOffsetVertical: Dp,
     overlayWidth: Dp?,
@@ -261,7 +261,7 @@ private fun LineChartOverlayInformationWithInterpolatedValues(
             touchOffsetVertical = touchOffsetVertical,
             requiredOverlayWidth = overlayWidth,
             overlayAlpha = overlayAlpha,
-            content = {
+            content = { xIsCloseToCenter ->
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
@@ -295,7 +295,7 @@ private fun LineChartOverlayInformationWithInterpolatedValues(
 
                             val dataName = seriesAndInterpolatedValue.lineChartSeries.dataName
                             val interpolatedValue = seriesAndInterpolatedValue.interpolatedValue
-                            overlayDataEntryLayout(dataName, dataNameShort, dataUnit, interpolatedValue)
+                            overlayDataEntryLayout(dataName, dataNameShort, dataUnit, interpolatedValue, xIsCloseToCenter)
                         }
                     }
                 }

@@ -22,6 +22,11 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
+/**
+ * @param content Composable content of the overlay information element. The Boolean? parameter states
+ * whether the user-selected (touched and held) area is close to the center of X-axis.
+ * The Boolean? parameter is applicable only to line chart.
+ */
 @Composable
 internal fun OverlayInformation(
     positionX: Float?,
@@ -32,7 +37,7 @@ internal fun OverlayInformation(
     requiredOverlayWidth: Dp?,
     overlayAlpha: Float,
     pointsToAvoid: List<Offset> = emptyList(),
-    content: @Composable () -> Unit,
+    content: @Composable (Boolean?) -> Unit,
 ) {
     if (positionX == null || positionX < 0) {
         return
@@ -117,6 +122,15 @@ internal fun OverlayInformation(
                 }
             )
     ) {
-        content()
+        /*
+            Providing the xIsCloseToCenter Boolean to content is necessary for cases when the overlay content
+            is wide and does not fit on the screen only when the cursor is in the middle of the X-axis.
+            With the help of this Boolean parameter the user can alter the width of the content
+            when needed.
+        */
+        val halfContainerWidth = containerSize.width / 2
+        val oneTenth = containerSize.width / 10
+        val xIsCloseToCenter = positionX in (halfContainerWidth-oneTenth)..(halfContainerWidth+oneTenth)
+        content(xIsCloseToCenter)
     }
 }

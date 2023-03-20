@@ -61,7 +61,7 @@ fun BarChart(
     yAxisMarkerLayout: @Composable (value: Any) -> Unit = GridDefaults.YAxisMarkerLayout,
     yAxisLabelLayout: (@Composable () -> Unit)? = GridDefaults.YAxisDataTitleLayout,
     animation: ChartAnimation = ChartAnimation.Simple(),
-    overlayDataEntryLabel: @Composable (dataName: String, dataNameShort: String?, dataUnit: String?, value: Any) -> Unit = GridDefaults.OverlayDataEntryLabel,
+    overlayDataEntryLabel: @Composable (dataName: String, dataNameShort: String?, dataUnit: String?, value: Any, xIsCloseToCenter: Boolean?) -> Unit = GridDefaults.OverlayDataEntryLabel,
 ) {
     val verticalLinesCount = remember(data) { data.maxX.toInt() + 1 }
 
@@ -197,7 +197,7 @@ private fun BoxWithConstraintsScope.SelectedValueLabel(
     position: PointF,
     data: BarChartBar,
     colors: BarChartColors,
-    overlayDataEntryLabel: @Composable (dataName: String, dataNameShort: String?, dataUnit: String?, value: Any) -> Unit
+    overlayDataEntryLabel: @Composable (dataName: String, dataNameShort: String?, dataUnit: String?, value: Any, xIsCloseToCenter: Boolean?) -> Unit
 ) {
     OverlayInformation(
         positionX = position.x,
@@ -211,7 +211,7 @@ private fun BoxWithConstraintsScope.SelectedValueLabel(
         touchOffsetVertical = LocalDensity.current.run { position.y!!.toDp() },
         touchOffsetHorizontal = 20.dp,
         content = {
-            overlayDataEntryLabel(data.data.x, null, null, data.data.y)
+            overlayDataEntryLabel(data.data.x, null, null, data.data.y, null)
         },
         requiredOverlayWidth = 200.dp,
         overlayAlpha = 0.9f,
