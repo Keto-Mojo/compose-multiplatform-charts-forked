@@ -6,6 +6,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.input.pointer.PointerEvent
 import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.PointerEventType
@@ -61,7 +62,9 @@ fun LineChartWithTwoYAxisSets(
     xAxisData: XAxisData? = XAxisData(),
     animation: ChartAnimation = ChartAnimation.Simple(),
     maxVerticalLines: Int = GridDefaults.NUMBER_OF_GRID_LINES,
+    verticalPathEffect: PathEffect? = null,
     maxHorizontalLines: Int = GridDefaults.NUMBER_OF_GRID_LINES,
+    horizontalPathEffect: PathEffect? = null,
     drawPoints: Boolean = false,
     legendData: LegendData? = LegendData()
 ) {
@@ -75,7 +78,9 @@ fun LineChartWithTwoYAxisSets(
             overlayData = overlayData,
             animation = animation,
             maxVerticalLines = maxVerticalLines,
+            verticalPathEffect = verticalPathEffect,
             maxHorizontalLines = maxHorizontalLines,
+            horizontalPathEffect = horizontalPathEffect,
             drawPoints = drawPoints,
             legendData = legendData,
         )
@@ -88,7 +93,9 @@ fun LineChartWithTwoYAxisSets(
             overlayData = overlayData,
             animation = animation,
             maxVerticalLines = maxVerticalLines,
+            verticalPathEffect = verticalPathEffect,
             maxHorizontalLines = maxHorizontalLines,
+            horizontalPathEffect = horizontalPathEffect,
             drawPoints = drawPoints,
             legendData = legendData,
         )
@@ -105,7 +112,9 @@ private fun LineChartWithTwoYAxisSetsLayout(
     overlayData: OverlayData?,
     animation: ChartAnimation,
     maxVerticalLines: Int,
+    verticalPathEffect: PathEffect?,
     maxHorizontalLines: Int,
+    horizontalPathEffect: PathEffect?,
     drawPoints: Boolean,
     legendData: LegendData?,
 ) {
@@ -249,7 +258,12 @@ private fun LineChartWithTwoYAxisSetsLayout(
                                     }
                                 }
 
-                            drawChartGrid(lines, colors.grid)
+                            drawChartGrid(
+                                grid = lines,
+                                color = colors.grid,
+                                horizontalPathEffect = horizontalPathEffect,
+                                verticalPathEffect = verticalPathEffect,
+                            )
 
                             drawLineChart(
                                 // we have to join those points so that the x-values align properly. Otherwise, in case when

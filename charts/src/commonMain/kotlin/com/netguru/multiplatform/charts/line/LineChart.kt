@@ -16,6 +16,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.input.pointer.PointerEvent
 import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.PointerEventType
@@ -69,7 +70,9 @@ fun LineChart(
     xAxisData: XAxisData? = XAxisData(),
     animation: ChartAnimation = ChartAnimation.Simple(),
     maxVerticalLines: Int = GridDefaults.NUMBER_OF_GRID_LINES,
+    verticalPathEffect: PathEffect? = null,
     maxHorizontalLines: Int = GridDefaults.NUMBER_OF_GRID_LINES,
+    horizontalPathEffect: PathEffect? = null,
     drawPoints: Boolean = false,
     legendData: LegendData? = LegendData(),
 ) {
@@ -143,6 +146,8 @@ fun LineChart(
                             drawChartGrid(
                                 grid = lines,
                                 color = colors.grid,
+                                horizontalPathEffect = horizontalPathEffect,
+                                verticalPathEffect = verticalPathEffect,
                             )
 
                             drawLineChart(
