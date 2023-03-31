@@ -274,6 +274,7 @@ private fun LineChartWithTwoYAxisSetsLayout(
                                 graphBottomPadding = horizontalLinesOffset,
                                 alpha = alphas,
                                 drawPoints = drawPoints,
+                                pointSize = 4f,
                                 selectedPointsForDrawing = pointsToDraw.filter {
                                     leftYAxisData.lineChartData.series.contains(
                                         it.lineChartSeries
@@ -291,6 +292,7 @@ private fun LineChartWithTwoYAxisSetsLayout(
                                 graphBottomPadding = horizontalLinesOffset,
                                 alpha = alphas,
                                 drawPoints = drawPoints,
+                                pointSize = 2.5f,
                                 selectedPointsForDrawing = pointsToDraw.filter {
                                     rightYAxisData.lineChartData.series.contains(
                                         it.lineChartSeries

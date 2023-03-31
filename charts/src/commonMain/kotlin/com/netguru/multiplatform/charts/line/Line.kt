@@ -20,6 +20,8 @@ internal fun DrawScope.drawLineChart(
     graphBottomPadding: Dp,
     alpha: List<Float>,
     drawPoints: Boolean,
+    pointSize: Float = 3f,
+    pointCap: StrokeCap = StrokeCap.Round,
     selectedPointsForDrawing: List<SeriesAndClosestPoint>,
     xAxisScale: TimestampXAxisScale,
 ) {
@@ -88,18 +90,18 @@ internal fun DrawScope.drawLineChart(
             }
 
         if (mappedPoints.size == 1 || drawPoints) {
-            val pointSize = data.lineWidth.toPx().times(if (drawPoints) 3f else 2f)
+            val pointSizeToDraw = data.lineWidth.toPx().times(if (drawPoints) pointSize else 2f)
             val widthThePointsTake = mappedPoints.maxOf { it.x } - mappedPoints.minOf { it.x }
             val isEnoughSpace =
-                (mappedPoints.size - 2 /* this 2 is a magic number, it just works better with it */) * pointSize * 1.5 < widthThePointsTake
+                (mappedPoints.size - 2 /* this 2 is a magic number, it just works better with it */) * pointSizeToDraw * 1.5 < widthThePointsTake
             if (isEnoughSpace) {
                 drawPoints(
                     points = mappedPoints.filter { it.y != null }.map { Offset(it.x, it.y!!) },
                     pointMode = PointMode.Points,
                     color = data.lineColor,
                     alpha = alpha[seriesIndex],
-                    strokeWidth = pointSize,
-                    cap = StrokeCap.Round,
+                    strokeWidth = pointSizeToDraw,
+                    cap = pointCap,
                 )
             }
         }
