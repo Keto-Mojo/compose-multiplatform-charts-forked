@@ -2,6 +2,7 @@ package com.netguru.multiplatform.charts.grid
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import com.netguru.multiplatform.charts.grid.axisscale.x.XAxisScale
 import com.netguru.multiplatform.charts.grid.axisscale.y.YAxisScale
@@ -10,14 +11,20 @@ import com.netguru.multiplatform.charts.mapValueToDifferentRange
 fun DrawScope.drawChartGrid(
     grid: ChartGrid,
     color: Color,
+    horizontalPathEffect: PathEffect? = null,
+    verticalPathEffect: PathEffect? = null,
 ) {
     grid.horizontalLines.forEach {
-        drawLine(
-            color = color,
-            start = Offset(0f, it.position),
-            end = Offset(size.width, it.position),
-            strokeWidth = 1f,
-        )
+        // avoiding drawing a horizontal line at zero position
+        if (it.position != grid.zeroPosition.position) {
+            drawLine(
+                color = color,
+                start = Offset(0f, it.position),
+                end = Offset(size.width, it.position),
+                strokeWidth = 1f,
+                pathEffect = horizontalPathEffect,
+            )
+        }
     }
     drawLine(
         color = color,
@@ -31,6 +38,7 @@ fun DrawScope.drawChartGrid(
             start = Offset(it.position, 0f),
             end = Offset(it.position, size.height),
             strokeWidth = 1f,
+            pathEffect = verticalPathEffect,
         )
     }
 }
