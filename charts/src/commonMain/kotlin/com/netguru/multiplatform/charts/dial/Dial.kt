@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.geometry.center
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
@@ -25,6 +26,7 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.platform.LocalDensity
@@ -37,6 +39,7 @@ import com.netguru.multiplatform.charts.getAnimationAlphas
 import com.netguru.multiplatform.charts.mapValueToDifferentRange
 import com.netguru.multiplatform.charts.theme.ChartTheme
 import kotlin.math.PI
+import kotlin.math.abs
 import kotlin.math.sin
 
 /**
@@ -306,21 +309,50 @@ private fun DrawScope.drawProgressBar(
             }
 
             is DialProgressColors.GradientWithStops -> {
-                drawArc(
-                    brush = Brush.sweepGradient(
-                        colorStops = progressBarColor.colorStops.toTypedArray(),
-                        center = Offset(
-                            x = size.width / 2,
-                            y = size.height,
-                        ),
+                val sweep = (sweepAngle - (2f * arcPadding)).coerceAtLeast(0f)
+
+                val colorStopsCalculated = progressBarColor.colorStops.mapIndexed { index, pair ->
+                    val multiplier = 360.0 / sweep
+
+                    val newPair = if (index == progressBarColor.colorStops.lastIndex) {
+                        pair.copy(first = 1f)
+                    } else {
+                        pair.copy(
+                            first = ((pair.first / multiplier) ).toFloat()
+                        )
+                    }
+
+                    if (newPair.first > 1f) {
+                        newPair.copy(abs(1f - newPair.first))
+                    } else {
+                        newPair
+                    }
+
+                }.toMutableList()
+
+
+                val brush = Brush.sweepGradient(
+                    colorStops = colorStopsCalculated.sortedBy { it.first }.toTypedArray(),
+                    center = Offset(
+                        x = center.x,
+                        y = center.y,
                     ),
-                    startAngle = START_ANGLE + arcPadding,
-                    sweepAngle = (sweepAngle - (2f * arcPadding)).coerceAtLeast(0f),
-                    useCenter = false,
-                    style = style,
-                    topLeft = topLeftOffset,
-                    size = arcSize
                 )
+
+                rotate (
+                    START_ANGLE + arcPadding,
+                    arcSize.center.plus(topLeftOffset)
+                ) {
+                    drawArc(
+                        brush = brush,
+                        startAngle = 0f,
+                        sweepAngle = sweep,
+                        useCenter = false,
+                        style = style,
+                        topLeft = topLeftOffset,
+                        size = arcSize
+                    )
+                }
             }
 
             is DialProgressColors.SingleColor -> {
